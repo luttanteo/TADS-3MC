@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemplo Spring MVC</title>
+</head>
+<body>
+  <h1>Cadastro de Pessoas</h1>
+  <form th:action="@{/salvar}" th:object="${pessoa}" method="post">
+    <div>
+      <label>Nome:</label>
+      <input th:field="*{nome}" placeholder="Digite o nome"/>
+      <div th:if="${#fields.hasErrors('nome')}"
+           th:errors="*{nome}"></div>
+    </div>
+
+    <div>
+      <label>Sobrenome:</label>
+      <input th:field="*{sobrenome}" placeholder="Digite o sobrenome"/>
+      <div th:if="${#fields.hasErrors('sobrenome')}"
+           th:errors="*{sobrenome}"></div>
+    </div>
+
+    <button type="submit">Salvar</button>
+  </form>
+
+  <h2>Lista de Pessoas</h2>
+  <ul>
+    <li th:each="p : ${lista}"
+        th:text="${p.nome} + ' ' +${p.sobrenome}"></li>
+  </ul>
+</body>
+</html>

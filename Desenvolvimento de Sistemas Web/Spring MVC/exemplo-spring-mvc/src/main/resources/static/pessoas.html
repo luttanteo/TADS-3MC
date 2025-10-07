@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pessoas</title>
+</head>
+<body>
+  <h1>Cadastro de Pessoas</h1>
+
+  <form id="f">
+    <input id="nome" placeholder="Nome">
+    <input id="sobrenome" placeholder="Sobrenome">
+    <button>Salvar</button>
+  </form>
+
+  <h2>Lista de Pessoas</h2>
+  <ul id="l"></ul>
+
+  <script>
+    const f = document.getElementById('f');
+    const l = document.getElementById('l');
+    let editId = null;
+
+    async function carregar() {
+      const d = await fetch('/api/pessoas').then(r => r.json());
+      l.innerHTML = d.map((p,i) =>`
+        <li>
+          ${i} - ${p.nome} ${p.sobrenome}
+        </li>
+      `).join('');
+    }
+
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const pessoa = {
+        nome:nome.value,
+        sobrenome:sobrenome.value
+      };
+      if(editId==null)
+        await fetch('/api/pessoas',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(pessoa)
+        });
+
+        f.reset();
+        carregar();
+    }
+    carregar();
+  </script>
+</body>
+</html>
